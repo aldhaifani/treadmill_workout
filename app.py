@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, session
 import openpyxl
 
 
@@ -22,6 +22,36 @@ data_obj = [
 @app.route("/")
 def home():
     return render_template("home.html")
+
+
+@app.route("/exercise")
+def exercise():
+    try:
+        temp = session["roundCounter"]
+    except:
+        session["roundCounter"] = 0
+
+    try:
+        temp = session["data_n"]
+    except:
+        session["data_n"] = len(data_obj)
+
+    if session["data_n"] > session["roundCounter"]:
+        session["label"] = data_obj[session["roundCounter"]]["label"]
+        session["time"] = data_obj[session["roundCounter"]]["time"]
+        session["incline"] = data_obj[session["roundCounter"]]["incline"]
+        session["speed"] = data_obj[session["roundCounter"]]["speed"]
+        session["roundCounter"] = session["roundCounter"] + 1
+
+        return render_template(
+            "exercise.html",
+            label=session["label"],
+            time=session["time"],
+            incline=session["incline"],
+            speed=session["speed"],
+        )
+    else:
+        render_template("index.html")
 
 
 if __name__ == "__main__":

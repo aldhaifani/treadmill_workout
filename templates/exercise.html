@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block css_link %}
+<link
+	rel="stylesheet"
+	href="{{ url_for('static', filename='css/exercise.css') }}"
+/>
+{% endblock %}
+
+{% block main %}
+  <h1 class="label" id="label">{{ label }}</h1>
+  <div class="settings-container">
+    <div class="incline-settings">
+      <img
+        src="{{ url_for('static', filename='images/Angle Icon 15.png') }}"
+        alt="angle"
+        class="incline-icon"
+      />
+      <h2 class="incline-percent">{{ incline }}%</h2>
+    </div>
+    <div class="speed-settings">
+      <img
+        src="{{ url_for('static', filename='images/running-png-icon-26.jpg') }}"
+        alt="run"
+        class="speed-icon"
+      />
+      <h2 class="speed-value">{{ speed }}Km</h2>
+    </div>
+  </div>
+  <div class="timer-container">
+    <span class="timer" id="timer">{{ time }}s</span>
+    <progress
+      max="{{ time }}"
+      value="{{ time }}"
+      class="progress"
+      id="progressBar"
+    ></progress>
+  </div>
+{% endblock %}
+
+{% block js %}
+	<script>
+		const timerElement = document.getElementById('timer');
+    const progressBar = document.getElementById('progressBar');
+
+    let timerCounter = progressBar.max;
+
+    const interval = setInterval(() => {
+      if (timerCounter <= 1) {
+        window.location.href = "{{ url_for('exercise') }}";
+        clearInterval(interval);
+      }
+
+      timerCounter = timerCounter - 1;
+      timerElement.innerHTML = timerCounter + 's';
+      progressBar.value = timerCounter;
+    }, 1000);
+	</script>
+{% endblock %}
