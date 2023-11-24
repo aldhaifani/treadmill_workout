@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block css_link %}
+<link
+	rel="stylesheet"
+	href="{{ url_for('static', filename='css/home.css') }}"
+/>
+{% endblock %}
+
+{% block main %}
+	<a href="#" class="btn" id="btn">Let's Go</a>
+{% endblock %}
+
+{% block js %}
+	<script>
+		const btn = document.getElementById('btn');
+		btn.addEventListener('click', () => {
+			btn.classList.toggle('is-clicked');
+		});
+		function delay(URL) {
+			setTimeout(function () {
+				window.location = URL;
+			}, 250);
+		}
+	</script>
+{% endblock %}
